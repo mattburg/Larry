@@ -59,6 +59,15 @@ if __name__ == "__main__":
    scrapeHotArticles('worldnews')
    scrapeHotArticles('uspolitics')
    
+   scrapeHotArticles('liberal')
+   scrapeHotArticles('democrats')
+   scrapeHotArticles('progressive')
+   
+   scrapeHotArticles('conservative')
+   scrapeHotArticles('republicans')
+   
+   
+   
    
    conn.commit()
    

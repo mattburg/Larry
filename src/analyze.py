@@ -91,13 +91,14 @@ def examineSuccessRates():
    domainNames = []
    for result in results: 
       #print result.keys()
-      #if( result['NewCOUNT'] < 10):
-      #   continue
-      if( result['TopCOUNT'] < 15):
+      if( result['NewCOUNT'] < 20):
          continue
+      #if( result['TopCOUNT'] < 10):
+      #   continue
       percentSuccess = result['TopCount']/(1.0*result['NewCount'])
       print result['domain'] + " " + str(percentSuccess) + " " + str(result['TopAverage'])
       print result['domain'] + " " + str(result['NewCount'])
+      print result['domain'] + " " + str(result['TopCount'])
       xValues.append(result['NewCount'])
       yValues.append(result['TopCount'])
       successValues.append(percentSuccess)
@@ -109,6 +110,15 @@ def examineSuccessRates():
    #hist(successValues, bins=50, label="test")  
    #pie(successValues, labels=domainNames, startangle=90)
    #scatter(xValues, yValues)
+
+def connectDB():
+   dbPath = "/Users/greg/localResearch/redditDB.db"
+   global conn
+   conn = sqlite3.connect(dbPath)
+   
+   conn.row_factory = sqlite3.Row
+   global cursor
+   cursor = conn.cursor()
 
 if __name__ == "__main__":
 

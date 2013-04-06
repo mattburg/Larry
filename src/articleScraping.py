@@ -11,6 +11,7 @@ import operator
 import sys
 import urllib2
 import sqlite3
+import datetime
 
 
 import praw
@@ -21,7 +22,7 @@ def scrapeNewArticles(subreddit):
    cursor = conn.cursor()
    user_agent = "political bias scaper"
    r = praw.Reddit(user_agent=user_agent)
-   newSubmissions = r.get_subreddit('politics').get_new_by_date(limit=100)
+   newSubmissions = r.get_subreddit('politics').get_new(limit=100)
    for thing in newSubmissions:
       print thing.subreddit
       t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
@@ -30,6 +31,23 @@ def scrapeNewArticles(subreddit):
       cursor.execute('INSERT OR REPLACE INTO newArticles values (?,?,?,?,?,?,?,?,?,?,?)', t)
 
       conn.commit()
+
+def scrapeNewArticles(subreddit, articleLimit, cursor, conn, tableName):
+   user_agent = "political bias scaper"
+   r = praw.Reddit(user_agent=user_agent)
+   newSubmissions = r.get_subreddit(subreddit).get_new(limit=articleLimit)
+   print "new submissions"
+   for thing in newSubmissions:
+      print thing
+
+      
+      t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
+            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments,datetime.datetime.now()]
+      
+      cursor.execute('INSERT OR REPLACE INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?)', t) 
+      conn.commit() 
+
+
       
 def scrapeHotArticles(subreddit):
    user_agent = "political bias scaper"
@@ -57,9 +75,9 @@ def scrapeHotArticles(subreddit, articleLimit, cursor, conn, tableName):
 
       
       t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
-            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments]
+            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments,datetime.datetime.now()]
       
-      cursor.execute('INSERT OR REPLACE INTO trainingData values (?,?,?,?,?,?,?,?,?,?,?)', t) 
+      cursor.execute('INSERT OR REPLACE INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?)', t) 
       conn.commit()      
       
 def scrapeTopArticles(subreddit, articleLimit, cursor, conn, tableName):

@@ -48,33 +48,61 @@ if __name__ == "__main__":
                   dateCreated date, 
                   title text, 
                   subreddit text, 
-                  score integer)
+                  score integer,
+                  ups integer, 
+                  downs integer, 
+                  numComments integer)
                   """)
 
-
+   cursor.execute("""CREATE TABLE if not exists userComments
+                  (id text PRIMARY KEY, 
+                  author text, 
+                  dateCreated date,  
+                  subreddit text, 
+                  score integer,
+                  ups integer,
+                  downs integer,
+                  numReplies integer)
+                  """)   
 
 
 
    user_agent = "user post success predictor"
    r = praw.Reddit(user_agent=user_agent)
    user = r.get_redditor("thisaintnogame")
-   gen = user.get_submitted()
+   allSubmissions = user.get_submitted() #this gets all the posts a user has made
    
-   for thing in gen:
+   for thing in allSubmissions:
       print thing.author
       print thing
       print thing.subreddit
       print thing.score
-      cursor.execute("INSERT OR REPLACE INTO userSubmissions VALUES (?,?,?,?,?,?)",
-                     (thing.id,
-                     str(thing.author),
-                     thing.created,
-                     thing.title,
-                     thing.subreddit.display_name,
-                     thing.score))
-      
-      conn.commit()
+      thing.replace_more_comments()
+      submissionComments = thing.comments
+      print len(submissionComments)
+      #print thing.
+      # cursor.execute("INSERT OR REPLACE INTO userSubmissions VALUES (?,?,?,?,?,?,?,?,?)",
+#                      (thing.id,
+#                      str(thing.author),
+#                      thing.created,
+#                      thing.title,
+#                      thing.subreddit.display_name,
+#                      thing.score))
+#       
+#       conn.commit()
       #print vars(thing)  
+    
+    
+   allComments = user.get_comments()   
+   for comment in allComments: 
+      if comment.is_root == False:
+         continue
+      print comment.author
+      print comment
+      print comment.subreddit
+      print comment.score
+      commentReplies = comment.replies
+      print "Number of replies = " + str(len(commentReplies))
       
       
       

@@ -54,3 +54,11 @@ if __name__ == "__main__":
    scrapeNewArticles('politics')
    scrapeNewArticles('worldnews')
    scrapeNewArticles('uspolitics')
+
+   scrapeNewArticles('liberal')
+   scrapeNewArticles('democrats')
+   scrapeNewArticles('progressive')
+   
+   scrapeNewArticles('conservative')
+   scrapeNewArticles('republicans')
+

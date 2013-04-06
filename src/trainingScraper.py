@@ -25,5 +25,5 @@ if __name__ == "__main__":
    #Conservative subreddits
    articleScraping.scrapeHotArticles('conservative', 1000, cursor, conn, 'trainingData')
    articleScraping.scrapeHotArticles('republicans', 1000, cursor, conn, 'trainingData')
-   articleScraping.scrapeHotArticles('liberal', 1000, cursor, conn, 'trainingData')
+   #articleScraping.scrapeHotArticles('liberal', 1000, cursor, conn, 'trainingData')
    
