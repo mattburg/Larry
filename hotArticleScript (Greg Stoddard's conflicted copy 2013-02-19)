@@ -1,2 +1,0 @@
-scriptPath="~/Users/greg/Dropbox/research/crowdCuration/code/redditScraper/"
-python $scriptPath/scrapeHotArticles.py
