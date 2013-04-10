@@ -48,6 +48,24 @@ def scrapeNewArticles(subreddit, articleLimit, cursor, conn, tableName):
       conn.commit() 
 
 
+def scrapeNewArticlesPositionDependent(subreddit, articleLimit, cursor, conn, tableName):
+   user_agent = "political bias scaper"
+   r = praw.Reddit(user_agent=user_agent)
+   newSubmissions = r.get_subreddit(subreddit).get_new(limit=articleLimit)
+   print "new submissions"
+   position = 1
+   for thing in newSubmissions:
+      print thing
+
+      
+      t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
+            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, 
+            thing.num_comments,datetime.datetime.now(), position]
+      position += 1
+      
+      cursor.execute('INSERT INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?,?)', t) 
+      conn.commit() 
+
       
 def scrapeHotArticles(subreddit):
    user_agent = "political bias scaper"
@@ -64,6 +82,7 @@ def scrapeHotArticles(subreddit):
       cursor.execute('INSERT OR REPLACE INTO topArticles values (?,?,?,?,?,?,?,?,?,?,?)', t) 
       conn.commit()
       
+
       
 def scrapeHotArticles(subreddit, articleLimit, cursor, conn, tableName):
    user_agent = "political bias scaper"
@@ -93,6 +112,25 @@ def scrapeTopArticles(subreddit, articleLimit, cursor, conn, tableName):
             thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments]
       
       cursor.execute('INSERT OR REPLACE INTO trainingData values (?,?,?,?,?,?,?,?,?,?,?)', t) 
+      conn.commit()
+
+
+#Need to make sure there's not a primary key on article ID       
+def scrapeTopArticlesPositionDependent(subreddit, articleLimit, cursor, conn, tableName):
+   user_agent = "political bias scaper"
+   r = praw.Reddit(user_agent=user_agent)
+   topSubmissions = r.get_subreddit(subreddit).get_top(limit=articleLimit)
+   print "top submissions"
+   position = 1
+   for thing in topSubmissions:
+      print thing
+
+      
+      t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
+            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, 
+            thing.num_comments, position]
+      position += 1
+      cursor.execute('INSERT INTO trainingData values (?,?,?,?,?,?,?,?,?,?,?)', t) 
       conn.commit()
 
 def main(user, thing_type="submissions"):
