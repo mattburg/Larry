@@ -32,8 +32,8 @@ if __name__ == "__main__":
    articleScraping.scrapeHotArticles('listentothis', 25, cursor, conn, 'hotArticles')
    articleScraping.scrapeHotArticles('trueMusic', 25, cursor, conn, 'hotArticles')
    
-   articleScraping.scrapeHotArticlesPositionDependent('music', 25, cursor, conn, 'hotArticlesPositions')
-   articleScraping.scrapeHotArticlesPositionDependent('listentothis', 25, cursor, conn, 'hotArticlesPositions')
+   articleScraping.scrapeHotArticlesPositionDependent('music', 50, cursor, conn, 'hotArticlesPositions')
+   articleScraping.scrapeHotArticlesPositionDependent('listentothis', 50, cursor, conn, 'hotArticlesPositions')
    
    # New scraping
    articleScraping.scrapeNewArticles('music', 100, cursor, conn, 'newArticles')
