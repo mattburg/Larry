@@ -19,11 +19,19 @@ if __name__ == "__main__":
                   (id text PRIMARY KEY, subreddit text, dateCreated date, title text,  domain text, url text, author text,
                    score integer, ups integer, downs integer, numComments integer,timeScraped timestamp) 
                """)
+               
+               
+   cursor.execute("""CREATE TABLE if not exists hotArticlesPositions
+                  (id text, subreddit text, dateCreated date, title text,  domain text, url text, author text,
+                   score integer, ups integer, downs integer, numComments integer,timeScraped timestamp, position integer) 
+               """)
 
   
    # Hot scraping
    articleScraping.scrapeHotArticles('music', 25, cursor, conn, 'hotArticles')
    articleScraping.scrapeHotArticles('listentothis', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeHotArticlesPositionDependent('music', 25, cursor, conn, 'hotArticlesPositions')
+   articleScraping.scrapeHotArticlesPositionDependent('listentothis', 25, cursor, conn, 'hotArticlesPositions')
    
    # New scraping
    articleScraping.scrapeNewArticles('music', 100, cursor, conn, 'newArticles')
