@@ -38,5 +38,5 @@ if __name__ == "__main__":
    # New scraping
    articleScraping.scrapeNewArticles('music', 100, cursor, conn, 'newArticles')
    articleScraping.scrapeNewArticles('listentothis', 100, cursor, conn, 'newArticles')
-   articleScraping.scrapeNewArticles('trueMusic', 25, cursor, conn, 'newArticles')
+   articleScraping.scrapeNewArticles('trueMusic', 100, cursor, conn, 'newArticles')
    
