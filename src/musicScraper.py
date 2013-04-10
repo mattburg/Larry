@@ -8,7 +8,7 @@ import articleScraping
 
 if __name__ == "__main__":
 
-   conn = sqlite3.connect("/Users/greg/localResearch/redditMusic.db")
+   conn = sqlite3.connect("redditMusic.db")
    cursor = conn.cursor()
   
    cursor.execute("""CREATE TABLE if not exists newArticles
@@ -30,10 +30,13 @@ if __name__ == "__main__":
    # Hot scraping
    articleScraping.scrapeHotArticles('music', 25, cursor, conn, 'hotArticles')
    articleScraping.scrapeHotArticles('listentothis', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeHotArticles('trueMusic', 25, cursor, conn, 'hotArticles')
+   
    articleScraping.scrapeHotArticlesPositionDependent('music', 25, cursor, conn, 'hotArticlesPositions')
    articleScraping.scrapeHotArticlesPositionDependent('listentothis', 25, cursor, conn, 'hotArticlesPositions')
    
    # New scraping
    articleScraping.scrapeNewArticles('music', 100, cursor, conn, 'newArticles')
    articleScraping.scrapeNewArticles('listentothis', 100, cursor, conn, 'newArticles')
+   articleScraping.scrapeNewArticles('trueMusic', 25, cursor, conn, 'newArticles')
    
