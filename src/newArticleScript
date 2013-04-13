@@ -1,2 +1,2 @@
-scriptPath="/Users/greg/Dropbox/research/crowdCuration/code/redditScraper"
+scriptPath="/Users/greg/Dropbox/research/crowdCuration/code/redditScraper/src"
 python $scriptPath/scrapeNewArticles.py
