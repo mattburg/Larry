@@ -14,6 +14,7 @@ import sqlite3
 
 
 import praw
+import articleScraping
 
 
 
@@ -38,7 +39,7 @@ def scrapeHotArticles(subreddit):
 
 if __name__ == "__main__":
 
-   dbPath="/Users/greg/localResearch/redditDB.db"
+   dbPath="/Users/greg/localResearch/redditPoliticalDB.db"
    
     #Dropbox/research/crowdCuration/code/redditScraper/mydatabase.db"
 
@@ -46,28 +47,38 @@ if __name__ == "__main__":
    cursor = conn.cursor()
  
 # create a table
-   cursor.execute("""CREATE TABLE if not exists topArticles
+   cursor.execute("""CREATE TABLE if not exists hotArticles
                   (id text PRIMARY KEY, subreddit text, dateCreated date, title text,  domain text, url text, author text,
-                   score integer, ups integer, downs integer, numComments integer) 
+                   score integer, ups integer, downs integer, numComments integer, timeScraped timestamp) 
                """)
    cursor.execute("""CREATE TABLE if not exists newArticles
                   (id text PRIMARY KEY, subreddit text, dateCreated date, title text,  domain text, url text, author text,
-                   score integer, ups integer, downs integer, numComments integer) 
+                   score integer, ups integer, downs integer, numComments integer, timeScraped timestamp) 
                """)
 
-   scrapeHotArticles('politics')
-   scrapeHotArticles('worldnews')
-   scrapeHotArticles('uspolitics')
+   #scrapeHotArticles('politics')
+   #scrapeHotArticles('worldnews')
+   #scrapeHotArticles('uspolitics')
    
-   scrapeHotArticles('liberal')
-   scrapeHotArticles('democrats')
-   scrapeHotArticles('progressive')
+   #scrapeHotArticles('liberal')
+   #scrapeHotArticles('democrats')
+   #scrapeHotArticles('progressive')
    
-   scrapeHotArticles('conservative')
-   scrapeHotArticles('republicans')
+   #scrapeHotArticles('conservative')
+   #scrapeHotArticles('republicans')
+   
+   articleScraping.scrapeNewArticles('politics', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeNewArticles('worldnews', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeNewArticles('uspolitics', 25, cursor, conn, 'hotArticles')
+   
+   articleScraping.scrapeNewArticles('liberal', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeNewArticles('democrats', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeNewArticles('progressive', 25, cursor, conn, 'hotArticles')
+   
+   articleScraping.scrapeNewArticles('conservative', 25, cursor, conn, 'hotArticles')
+   articleScraping.scrapeNewArticles('republicans', 25, cursor, conn, 'hotArticles')
    
    
    
    
-   conn.commit()
    
