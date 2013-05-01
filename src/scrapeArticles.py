@@ -11,6 +11,7 @@ import operator
 import sys
 import urllib2
 import sqlite3
+import os
 
 
 import articleScraping as a
@@ -19,9 +20,9 @@ import articleScraping as a
 
 if __name__ == "__main__":
 
-   dbPath="/Users/greg/localResearch/redditTest.db"
-   
-
+   #dbPath="/Users/greg/localResearch/redditTest.db"
+   dbPath = os.environ["REDDIT_EVOLUTION"]
+   dbPath += "/redditEvolution.db" 
    conn = sqlite3.connect(dbPath)
    cursor = conn.cursor()
  
@@ -35,8 +36,8 @@ if __name__ == "__main__":
                    score integer, ups integer, downs integer, numComments integer, timeScraped timestamp, position integer) 
                """)
 
-   reddits = ['politics', 'worldnews', 'uspolitics', 'liberal', 'democrats', 'progressive', 'conservative', 'technology', 'science', 
-               'AskHistorians', 'askscience', 'news', 'worldpolitics']
+   reddits = ['politics', 'worldnews', 'uspolitics', 'liberal', 'progressive', 'conservative', 'technology', 'science', 
+               'news', 'worldpolitics']
 
    for subreddit in reddits:
       a.scrapeNewArticlesPositionDependent(subreddit, 1000, cursor,conn,'newArticles')
