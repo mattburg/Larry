@@ -65,7 +65,7 @@ def scrapeNewArticlesPositionDependent(subreddit, articleLimit, cursor, conn, ta
       position += 1
       
       cursor.execute('INSERT INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?,?)', t) 
-   conn.commit() 
+      conn.commit() 
 
       
 def scrapeHotArticles(subreddit):
@@ -117,7 +117,7 @@ def scrapeHotArticlesPositionDependent(subreddit, articleLimit, cursor, conn, ta
             thing.num_comments,currentTime, position]
       position += 1
       cursor.execute('INSERT INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?,?)', t) 
-   conn.commit()    
+      conn.commit()    
       
 def scrapeTopArticles(subreddit, articleLimit, cursor, conn, tableName):
    user_agent = "political bias scaper"
