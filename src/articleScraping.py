@@ -52,19 +52,20 @@ def scrapeNewArticlesPositionDependent(subreddit, articleLimit, cursor, conn, ta
    user_agent = "political bias scaper"
    r = praw.Reddit(user_agent=user_agent)
    newSubmissions = r.get_subreddit(subreddit).get_new(limit=articleLimit)
-   print "new submissions"
+   #print "new submissions"
    position = 1
+   currentTime = datetime.datetime.now()
    for thing in newSubmissions:
-      print thing
+      #print thing
 
       
       t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
             thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, 
-            thing.num_comments,datetime.datetime.now(), position]
+            thing.num_comments,currentTime, position]
       position += 1
       
       cursor.execute('INSERT INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?,?)', t) 
-      conn.commit() 
+   conn.commit() 
 
       
 def scrapeHotArticles(subreddit):
@@ -89,12 +90,13 @@ def scrapeHotArticles(subreddit, articleLimit, cursor, conn, tableName):
    r = praw.Reddit(user_agent=user_agent)
    hotSubmissions = r.get_subreddit(subreddit).get_hot(limit=articleLimit)
    print "hot submissions"
+   currentTime = datetime.datetime.now()
    for thing in hotSubmissions:
       print thing
 
       
       t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
-            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments,datetime.datetime.now()]
+            thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, thing.num_comments,currentTime]
       
       cursor.execute('INSERT OR REPLACE INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?)', t) 
       conn.commit()  
@@ -103,18 +105,19 @@ def scrapeHotArticlesPositionDependent(subreddit, articleLimit, cursor, conn, ta
    user_agent = "political bias scaper"
    r = praw.Reddit(user_agent=user_agent)
    hotSubmissions = r.get_subreddit(subreddit).get_hot(limit=articleLimit)
-   print "hot submissions"
+   #print "hot submissions"
    position = 1
+   currentTime = datetime.datetime.now()
    for thing in hotSubmissions:
-      print thing
+      #print thing
 
       
       t = [thing.id, str(thing.subreddit), thing.created, thing.title, 
             thing.domain, thing.url, str(thing.author), thing.score, thing.ups, thing.downs, 
-            thing.num_comments,datetime.datetime.now(), position]
+            thing.num_comments,currentTime, position]
       position += 1
       cursor.execute('INSERT INTO ' + str(tableName) + '   values (?,?,?,?,?,?,?,?,?,?,?,?,?)', t) 
-      conn.commit()    
+   conn.commit()    
       
 def scrapeTopArticles(subreddit, articleLimit, cursor, conn, tableName):
    user_agent = "political bias scaper"
