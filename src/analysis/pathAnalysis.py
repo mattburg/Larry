@@ -125,14 +125,18 @@ def processPath(path):
    edges = []
    lastTime = 0
    for node in path:
-      print node
+      #print node
       if node[1] == 'new':
          continue      
       currentNodeName = node[1] + str(node[2])
+      if node[2] > 8:
+         currentNodeName = "8+"
       currentTime = parser.parse(node[0])
       
       #hack to deal with when there is no last node
       if lastTime == 0:
+         edge = ("ENTER", currentNodeName)
+         edges.append(edge)
          prevNodeName = currentNodeName
          lastTime = currentTime
          continue
@@ -165,7 +169,12 @@ def processAllPaths(paths):
       G.add_weighted_edges_from( [(edge[0],edge[1], edgeWeights[edge]) ] )
        
    nx.write_dot(G, "test.dot")
-   
+
+
+def createEvolutionGraph(subreddit, numArticles=500):
+   df = loadRawDataLimitArticles('hotArticles', subreddit, numArticles)
+   paths = getPostPathsWithTime(df)
+   processAllPaths(paths)   
    
 def blah():
    beginDate = date(2013, 5, 4)
