@@ -100,20 +100,27 @@ def frontPageTimes(subreddit):
         
    bins = [ i*3600 for i in range(1,24)]
    print bins
-   print len(timeLengths)    
+   print len(timeLengths)
+   
+   fig = plt.figure()
+   
+   fig.add_subplot(2,2,1)    
    plt.hist(timeLengths, bins=bins)
    plt.title("All articles")
    
-   plt.figure(2)
+   #plt.figure(2)
+   fig.add_subplot(2,2,2)
    plt.hist(timeByHour[0], bins=bins)
    plt.title("12am to 8am")
    
-   plt.figure(3)
+   #plt.figure(3)
+   fig.add_subplot(2,2,3)
    plt.hist(timeByHour[1], bins=bins)
    plt.title("8am to 4pm")
    
    
-   plt.figure(4)
+   #plt.figure(4)
+   fig.add_subplot(2,2,4)
    plt.hist(timeByHour[2], bins=bins)
    plt.title("4pm to 12am")
    
