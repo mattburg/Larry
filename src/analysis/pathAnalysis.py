@@ -1,11 +1,20 @@
+import matplotlib 
+matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+
+
+
 import sqlite3
-import matplotlib
 import networkx as nx
-from pylab import *
+
 from pandas import *
 import numpy as np
 from datetime import date
-import matplotlib.pyplot as plt
+
+
+
+from pylab import *
 
 from dateutil import parser
 
@@ -64,7 +73,10 @@ def loadRawDataLimitArticles(tableName,subredditName, limit):
 #calculate lengths of time on front page
 #need to attempt to control for time of day the article made it to the front page
 def frontPageTimes(subreddit):
-   query = '''SELECT t.url, MIN(t.timeScraped) as minTime, MAX(t.timeScraped) as maxTime FROM hotArticlesPositions t WHERE
+   
+   
+   
+   query = '''SELECT t.url, MIN(t.timeScraped) as minTime, MAX(t.timeScraped) as maxTime FROM hotArticles t WHERE
                t.subreddit = (?) AND
                t.position <= 25
             GROUP BY t.url'''  
@@ -86,7 +98,9 @@ def frontPageTimes(subreddit):
       
       timeLengths.append(diff.total_seconds())      
         
-   bins = [ i*3600 for i in range(1,24)]    
+   bins = [ i*3600 for i in range(1,24)]
+   print bins
+   print len(timeLengths)    
    plt.hist(timeLengths, bins=bins)
    plt.title("All articles")
    
@@ -102,6 +116,9 @@ def frontPageTimes(subreddit):
    plt.figure(4)
    plt.hist(timeByHour[2], bins=bins)
    plt.title("4pm to 12am")
+   
+   
+   plt.savefig(subreddit + '_times.png')
    
 def plotRandomLinks(limit=10):
    query = '''SELECT * FROM 
