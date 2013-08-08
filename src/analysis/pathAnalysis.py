@@ -28,9 +28,17 @@ from datetime import datetime, timedelta
 #We should really put an index on IDs for both tables, to allow for faster grabbing of results
 
 dbPath = "/z/reddit/redditEvolutionBackup.db"
+#dbPath = "/z/reddit/redditEvolution.db"
 #dbPath = "/Users/matthewburgess/Desktop/redditTime.db"
 cursor = sqlite3.connect(dbPath).cursor()
 
+
+def listSubs():
+   query = 'SELECT DISTINCT subreddit FROM hotArticles'
+   cursor.execute(query)
+   results = cursor.fetchall()
+   for result in results:
+      print result
 
 def createIndex():
    hotIndex = "CREATE INDEX idIndex ON hotArticles (id)"
