@@ -1,7 +1,5 @@
-import matplotlib 
-matplotlib.use('Agg')
+from pylab import *
 
-import matplotlib.pyplot as plt
 
 
 
@@ -14,11 +12,19 @@ from datetime import date
 
 
 
-from pylab import *
+
 
 from dateutil import parser
 
 from datetime import datetime, timedelta
+
+
+
+import matplotlib 
+#matplotlib.use('Agg')
+
+import matplotlib.pyplot as plt
+
 
 ####FIXXXX####
 #need to look into how to create paths from new listing to hot listing, this is currently not well defined!!!
@@ -33,6 +39,12 @@ dbPath = "/z/reddit/redditEvolutionBackup.db"
 cursor = sqlite3.connect(dbPath).cursor()
 
 
+def test():
+   print 'hello'
+   x = [1,2,3,4,5]
+   plt.plot(x,x)
+
+
 def listSubs():
    query = 'SELECT DISTINCT subreddit FROM hotArticles'
    cursor.execute(query)
@@ -43,8 +55,8 @@ def listSubs():
 def createIndex():
    hotIndex = "CREATE INDEX idIndex ON hotArticles (id)"
    newIndex =  "CREATE INDEX idIndex2 ON newArticles (id)"
-   #cursor.execute(hotIndex)
-   cursor.execute(newIndex)
+   cursor.execute(hotIndex)
+   #cursor.execute(newIndex)
 
 def loadRawDataLimitArticles(tableName,subredditName, limit):
    
@@ -84,10 +96,10 @@ def frontPageTimes(subreddit):
    
    
    
-   query = '''SELECT t.url, MIN(t.timeScraped) as minTime, MAX(t.timeScraped) as maxTime FROM hotArticles t WHERE
+   query = '''SELECT t.id, MIN(t.timeScraped) as minTime, MAX(t.timeScraped) as maxTime FROM hotArticles t WHERE
                t.subreddit = (?) AND
                t.position <= 25
-            GROUP BY t.url'''  
+            GROUP BY t.id'''  
             
    cursor.execute(query, [subreddit])
    timeLengths = []
@@ -137,8 +149,8 @@ def frontPageTimes(subreddit):
    
 def plotRandomLinks(limit=10):
    query = '''SELECT * FROM 
-            (SELECT S.url as url, S.subreddit as subreddit , COUNT(s.url) as numEntries, MIN(s.position) as minPos FROM hotArticlesPositions S
-            GROUP BY S.url) T 
+            (SELECT S.id as id, S.subreddit as subreddit , COUNT(s.id) as numEntries, MIN(s.position) as minPos FROM hotArticles S
+            GROUP BY S.id) T 
             WHERE numEntries >= 50 AND
             minPos < 25
             ORDER BY random()
@@ -152,10 +164,10 @@ def plotRandomLinks(limit=10):
       plt.figure(i)
       getThresholdGraph(result[0], result[1])
       i += 1
-def getThresholdGraph(url, subreddit):
-   df = loadRawData("hotArticlesPositions", subreddit)
+def getThresholdGraph(id, subreddit):
+   df = loadRawData("hotArticles", subreddit)
    
-   (scores, thresholds, lowerScores, times) =  calculateThresholds( url, df)
+   (scores, thresholds, lowerScores, times) =  calculateThresholds( id, df)
    #plt.plot(times, scores, times, thresholds, times, lowerScores)
    
    plt.plot(times, scores, times, thresholds)
@@ -175,9 +187,9 @@ def calcScore(x):
    return np.log10(x['score']) + (1/45000.0)*timeDifference.total_seconds()
    
    
-def calculateThresholds(articleURL, df):
+def calculateThresholds(id, df):
    timeConstant = (1)/(45000.0)
-   frontPageTimes = df[ df['url']==articleURL]
+   frontPageTimes = df[ df['id']==id]
    frontPageTimes = frontPageTimes[frontPageTimes['position'] <= 25]
    
    indices = frontPageTimes.index
